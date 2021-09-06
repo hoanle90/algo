@@ -1,7 +1,7 @@
 // algo
 // 1
 // dynamic progamming
-//  1, 1, 2, 3, 5, 8, 13
+//  1, 1, 2, 3, 5, 8, 13, 21
 // fibo
 let k = 0
 const fibo = (n) => {
@@ -11,8 +11,30 @@ const fibo = (n) => {
   return fibo(n - 2) + fibo(n - 1)
 }
 //O(2^n)
-// let fiboVal = fibo(20)
-// console.log('fibo', fiboVal)
+// let fiboVal = fibo(6)
+// console.log("fibo", fiboVal)
+// 1 2 3 4 5 => length =5
+// O(n) => 5 => for while
+// O(n^2) => 25 => for + for
+// O(log n) => binary search => 2 => 3 > 2
+// O(n log n) => for + binary search
+// O(1) => 5 // 1000 => 5
+// for() for() for() => 3 O(n) => O(n)
+// for + for for() => 2 O(n) + O(n^2) => O(n^2)
+
+// 13
+// fibo(8) + fibo(5)
+// 8 => co roi => gia tri 8 ra => chua co => 5 3
+// 5* 3* => fibo(5) + fibo(3) 2
+// 3* 2*     2* 1 => fibo(3) + fibo(2) fibo(1) + fibo(1) fibo(2) + fibo(1) 6
+// 2* 1   1  1   1 1 =>
+// 1 1
+// => 2^n
+//            1
+//          1   1
+//             1  1
+// dynamic programming dp
+
 // 5
 //5
 //44
@@ -21,14 +43,15 @@ const fibo = (n) => {
 
 const fiboMemo = (n, memo) => {
   console.log("k", k++)
+  console.log("memo", memo)
   if (n < 0) return 0
   if (n <= 1) return n
   if (memo[n]) return memo[n]
   memo[n] = fiboMemo(n - 2, memo) + fiboMemo(n - 1, memo)
   return memo[n]
 }
-// let fiboVal = fiboMemo(20,{})
-// console.log('fibo', fiboVal)
+let fiboVal = fiboMemo(30, {})
+console.log("fibo", fiboVal)
 
 // 2
 // can sum
@@ -92,6 +115,12 @@ const example3 = () => {
 // let num = [1, 2, 3, 4];
 // res = [24, 12, 8, 6]
 //
+// [1, 2, 3, 4 ,5 ,6 ,7, 8]
+//  5 => index 4
+// 6*7*8 => 5*7*8
+// [ 1, 2 , 6, 1*2*3*4 , 6*4*5, ...]
+// [8, 8*7, 8*7*6, ...]
+// index 4 => 5 = 1*2*3*4  * 8*7*6
 const example4 = () => {
   let num = [1, 2, 3, 4]
   // // res = [24, 12, 8, 6]
@@ -180,5 +209,5 @@ const slipIp = (str) => {
 }
 // 1 2 3 4 5 6
 // slice( 2,3)
-const result = slipIp("25525211135")
-console.log("result", result)
+//const result = slipIp("25525211135")
+//console.log("result", result)
