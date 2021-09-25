@@ -88,28 +88,21 @@ const canSum = (arr, val) => {
 // a[i] === a[j]
 // và abs(i-j) <= k
 // O(n)
-const example3 = () => {
-  let a = [1, 3, 5, 2, 3, 5, 6, 1]
+let a = [1, 3, 5, 2, 3, 5, 6, 1]
+const example3 = (a) => {
   let k = 5
   let res = {}
   let result = []
 
   for (let i = 0; i < a.length; i++) {
     if (res[a[i]] !== undefined) {
-      // co ton tai
-      //a[i] === a[j]
-      //abs(i-j) <= k
       if (Math.abs(i - res[a[i]]) <= k) {
         result.push({ i: res[a[i]], j: i })
       }
     } else {
-      // chua ton tai
       res[a[i]] = i
     }
   }
-  // console.log('input',a)
-  // console.log('res',res)
-  // console.log('result',result)
 }
 // 4
 // let num = [1, 2, 3, 4];

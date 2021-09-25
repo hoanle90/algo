@@ -192,15 +192,12 @@ const searchRotate = (arr, val) => {
   left = 0
   right = n - 1
   let middle = 0
-  console.log("rotatePoint", rotatePoint, arr[rotatePoint], val)
-  // do binary searcg
+
   arr[rotatePoint] >= val ? (right = rotatePoint) : (left = rotatePoint)
-  console.log("left", left)
-  console.log("right", right)
+
   while (left <= right) {
     middle = Math.floor((left + right) / 2)
     if (arr[middle] === val) {
-      console.log("val", middle)
       return middle
     } else if (val > arr[left]) {
       left = middle + 1

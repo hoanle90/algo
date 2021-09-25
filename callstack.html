@@ -22,63 +22,79 @@
     }
   </style>
   <script>
-    let h1 = document.getElementById("h1_id");
-    let button = document.getElementById("button");
-    let j = 0;
+    let h1 = document.getElementById("h1_id")
+    let button = document.getElementById("button")
+    let j = 0
+
+    const whichOneRunFirst = () => {
+      setTimeout(() => {
+        console.log(0)
+      }, 0) // marco task
+
+      new Promise((resolve, reject) => {
+        console.log(1)
+        resolve()
+      }).then(() => console.log(2)) // micro
+
+      console.log("3") // callstack
+
+      // 3 1 2 0
+    }
+    whichOneRunFirst()
 
     const normal = () => {
       for (let i = 0; i < 1000; i++) {
-        // h1.innerHTML = i;
-        // console.log(i, h1.innerHTML);
-        setTimeout(() => {
-          h1.innerHTML = i;
-          console.log(i, h1.innerHTML);
-        }, 1000 * i);
+        h1.innerHTML = i
+        console.log(i, h1.innerHTML)
+        // setTimeout(() => {
+        //   h1.innerHTML = i
+        //   console.log(i, h1.innerHTML)
+        // }, 100)
       }
-    };
+    }
 
     const normalStyle = () => {
       for (let i = 0; i < 100; i++) {
-        h1.innerHTML = i;
-        h1.style.transform = "translateX(" + i + "px)";
-        h1.style.color = randomColor();
-        console.log("normalStyle", i);
+        h1.innerHTML = i
+        h1.style.transform = "translateX(" + i + "px)"
+        h1.style.color = randomColor()
+        console.log("normalStyle", i)
       }
-      console.log("123");
-    };
+      console.log("123")
+    }
 
     const animation = () => {
-      j = 0;
-      window.requestAnimationFrame(setHtml);
-    };
+      j = 0
+      window.requestAnimationFrame(setHtml)
+    }
 
     const animationStyle = () => {
-      j = 0;
-      window.requestAnimationFrame(styleHtml);
-    };
+      j = 0
+      window.requestAnimationFrame(styleHtml)
+    }
 
     const setHtml = () => {
-      h1.innerHTML = j;
-      j++;
+      h1.innerHTML = j
+      j++
       if (j < 1000) {
-        window.requestAnimationFrame(setHtml);
+        window.requestAnimationFrame(setHtml)
       }
-    };
+    }
 
     const styleHtml = () => {
-      h1.innerHTML = j;
-      h1.style.transform = "translateX(" + j * 2 + "px)";
+      h1.innerHTML = j
+      h1.style.transform = "translateX(" + j * 2 + "px)"
       //   h1.style.color = randomColor();
-      j++;
+      j++
       if (j < 100) {
-        window.requestAnimationFrame(styleHtml);
+        window.requestAnimationFrame(styleHtml)
       }
-    };
+    }
 
     const sleep = (ms) => {
-      return new Promise((resolve) => setTimeout(resolve, ms));
-    };
-    const randomColor = () => Math.floor(Math.random() * 16777215).toString(16);
+      return new Promise((resolve) => setTimeout(resolve, ms))
+    }
+    const randomColor = () => Math.floor(Math.random() * 16777215).toString(16)
 
     /*
         js -> callstack 2s-> result 999 -> paint -> html -> js -> callstack
@@ -91,7 +107,7 @@
         <A>
            <B></B> -> connect redux -> context API
         </A>
-        
+
         */
   </script>
 </html>
