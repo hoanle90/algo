@@ -709,3 +709,165 @@ const reverseOnlyLetter = (s) => {
   console.log("res", res)
 }
 reverseOnlyLetter("a-b-==cd")
+
+// a-b-==cd
+//  d-c-==ba
+
+// regex
+// for a ->
+/*
+a-b-==cd
+abcd
+.map()
+match(/[a-zA-Z]/) 
+
+ // d-c-==ba
+*/
+
+// 18
+// https://leetcode.com/problems/longest-substring-without-repeating-characters/
+/*
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The answer is "abc", with the length of 3.
+Example 2:
+
+Input: s = "bbbbb"
+Output: 1
+Explanation: The answer is "b", with the length of 1.
+Example 3:
+
+Input: s = "pwwkew"
+Output: 3
+Explanation: The answer is "wke", with the length of 3.
+Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
+
+*/
+// const longestSubstring = (s) => {
+//   let length = s.length
+//   let left = 0
+//   let right = 0
+//   let maxLength = 2
+//   while (maxLength <= length) {
+//     for (let i = 0; i <= length - maxLength; i++) {
+//       let substr = s.slice(i, i + maxLength)
+//       console.log("substr", substr)
+//     }
+
+//     maxLength++
+//   }
+// }
+const checkNoDuplicate = (s) => {
+  let hashMap = {}
+  let length = s.length
+  let isDup = false
+  for (let i = 0; i < length; i++) {
+    if (hashMap[s[i]]) {
+      return true
+    } else {
+      hashMap[s[i]] = 1
+    }
+  }
+  return isDup
+}
+const longestSubstring = (s) => {
+  let maxLength = 0
+  let length = s.length
+
+  let hashMap = new Map()
+  let left = 0
+  for (let i = 0; i < length; i++) {
+    if (hashMap.has(s[i])) {
+      console.log("heelo", i, s[i])
+      left = hashMap.get(s[i]) + 1
+    }
+
+    maxLength = Math.max(maxLength, i - left + 1)
+    console.log("i maxlength", i, left, maxLength)
+    hashMap.set(s[i], i)
+  }
+  console.log("maxlength", maxLength)
+  console.log("hashmap", hashMap)
+  return maxLength
+}
+longestSubstring("abba")
+//longestSubstring(" ")
+/*
+p -> w -> w => doen
+w -> w -> done
+w ->k -> e -> w
+k e w
+
+*/
+//  1 2 3
+//  4 5 6
+//  7 8 9
+// [0,1] -> [1,0]
+// [0,2] -> [2,0]
+// [1,2] -> [2,1]
+/*
+  1 4 7
+  2 5 8
+  3 6 9
+*/
+//  [0,0] -> [0,2]
+//  [1,0] -> [1,2]
+//  [2,0] -> [2,2]
+
+//  7 4 1
+//  8 5 2
+//  9 6 3
+// [[7,4,1],[8,5,2],[9,6,3]]
+
+// 19
+// https://leetcode.com/problems/rotate-image/
+const rotateImage = (matrix) => {
+  let temp = 0
+  let length = matrix.length
+  let halfLength = Math.ceil(length / 2)
+  for (let i = 0; i < length; i++) {
+    for (let j = i; j < length; j++) {
+      if (i === j) continue
+
+      temp = matrix[i][j]
+      matrix[i][j] = matrix[j][i]
+      matrix[j][i] = temp
+    }
+  }
+  console.log("matrix1", matrix)
+  for (let i = 0; i < length; i++) {
+    for (let j = 0; j < halfLength; j++) {
+      let right = length - 1 - j
+      temp = matrix[i][j]
+      matrix[i][j] = matrix[i][right]
+      matrix[i][right] = temp
+    }
+  }
+  console.log("matrix", matrix)
+  return matrix
+}
+let image = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+]
+let image2 = [
+  [5, 1, 9, 11],
+  [2, 4, 8, 10],
+  [13, 3, 6, 7],
+  [15, 14, 12, 16],
+]
+/*
+[ 5, 2, 13, 15 ],
+[ 1, 4, 3, 14 ],
+[ 9, 8, 6, 7 ],
+[ 11, 10, 12, 16 ]
+
+[
+  [15,13,2,5],
+  [14,3,4,1],
+  [12,6,8,9],
+  [16,7,10,11]]
+*/
+
+rotateImage(image2)

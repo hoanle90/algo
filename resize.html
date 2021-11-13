@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <style>
+      html {
+        height: 100%;
+        width: 100%;
+      }
+      body {
+        height: 2000px;
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+
+      div.bar {
+        width: 20px;
+        top: 0px;
+      }
+
+      .fixedpercent {
+        position: fixed;
+        height: 99%;
+        background-color: lightsteelblue;
+      }
+
+      .fixedvh {
+        position: fixed;
+        height: 99vh;
+        background-color: lightskyblue;
+      }
+
+      .abspercent {
+        position: absolute;
+        height: 99%;
+        background-color: darksalmon;
+      }
+
+      .absvh {
+        position: absolute;
+        height: 99vh;
+        background-color: coral;
+      }
+
+      .textfixed {
+        box-sizing: border-box;
+        width: 65vh;
+        background-color: white;
+        opacity: 0.7;
+        height: 20px;
+        padding: 0px 80px;
+        transform: rotate(90deg);
+        transform-origin: left bottom 0;
+      }
+
+      .textabs {
+        box-sizing: border-box;
+        width: 65vh;
+        background-color: white;
+        opacity: 0.7;
+        height: 20px;
+        padding: 0px 80px;
+        transform: rotate(90deg);
+        transform-origin: left bottom 0;
+      }
+
+      #consoleContainer {
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        height: 100vh;
+        z-index: -1;
+        background-color: lightgrey;
+      }
+
+      #console {
+        position: absolute;
+        left: 0px;
+        right: 100px;
+      }
+      .innerHeightLog {
+        position: fixed;
+        right: 100px;
+        width: 180px;
+        height: 20px;
+        background-color: chartreuse;
+      }
+    </style>
+    <script>
+      const spinner = ["/", "-", "\\", "|"]
+      let spinnerIx = 0
+      function $(name) {
+        return document.querySelector(name)
+      }
+      function updateText() {
+        $(".fixedpercent .textfixed").innerText =
+          "percentage-based position:fixed (" +
+          $(".bar.fixedpercent").clientHeight +
+          "px)"
+        $(".fixedvh .textfixed").innerText =
+          "viewport-unit position:fixed (" +
+          $(".bar.fixedvh").clientHeight +
+          "px)"
+        $(".abspercent .textabs").innerText =
+          "percentage-based position:absolute (" +
+          $(".bar.abspercent").clientHeight +
+          "px)"
+        $(".absvh .textabs").innerText =
+          "viewport-unit position:absolute (" +
+          $(".bar.absvh").clientHeight +
+          "px)"
+        $(".innerHeightLog").innerText =
+          "innerHeight: " + window.innerHeight + "px " + spinner[spinnerIx]
+        spinnerIx = (spinnerIx + 1) % spinner.length
+      }
+      function resized() {
+        var console = document.getElementById("console")
+        console.innerHTML +=
+          "*Resize! window.innerHeight: " +
+          window.innerHeight +
+          ",  documentElement.clientHeight: " +
+          document.documentElement.clientHeight +
+          "<br>"
+        updateText()
+      }
+
+      var fullscreen = false
+      addEventListener("load", function () {
+        document.documentElement.addEventListener("click", function () {
+          if (fullscreen) document.webkitExitFullscreen()
+          else document.documentElement.webkitRequestFullscreen()
+
+          fullscreen = !fullscreen
+        })
+
+        visualViewport.addEventListener("resize", () => {
+          var console = document.getElementById("console")
+          console.innerHTML += "*VV Resize: " + visualViewport.height + " <br>"
+          updateText()
+        })
+        updateText()
+        setInterval(updateText, 500)
+      })
+    </script>
+  </head>
+
+  <body onresize="resized()">
+    <div style="right: 0px" class="bar fixedpercent">
+      <div class="textfixed">percentage-based position:fixed</div>
+    </div>
+    <div style="right: 25px" class="bar fixedvh">
+      <div class="textfixed">viewport-unit position:fixed</div>
+    </div>
+    <div style="right: 50px" class="bar abspercent">
+      <div class="textabs">percentage-based position:absolute</div>
+    </div>
+    <div style="right: 75px" class="bar absvh">
+      <div class="textabs">viewport-unit position:absolute</div>
+    </div>
+    <div class="innerHeightLog"></div>
+    <div id="consoleContainer">
+      <div id="console">
+        <br />
+        OnResize handler calls will be displayed below with window.innerWidth
+        and documentElement.clientHeight<br /><br />
+      </div>
+    </div>
+  </body>
+</html>

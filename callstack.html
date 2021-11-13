@@ -26,21 +26,19 @@
     let button = document.getElementById("button")
     let j = 0
 
-    const whichOneRunFirst = () => {
+    const whatIsTheOrderOfOutPut = () => {
       setTimeout(() => {
         console.log(0)
-      }, 0) // marco task
+      }, 0)
 
       new Promise((resolve, reject) => {
         console.log(1)
         resolve()
-      }).then(() => console.log(2)) // micro
+      }).then(() => console.log(2))
 
-      console.log("3") // callstack
-
-      // 3 1 2 0
+      console.log("3")
     }
-    whichOneRunFirst()
+    whatIsTheOrderOfOutPut()
 
     const normal = () => {
       for (let i = 0; i < 1000; i++) {
