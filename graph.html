@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="graph"></div>
+  </body>
+  <script>
+    //     let m =
+    //    [[0,0,1,1,1,1],
+    //     [1,0,0,0,1,1],
+    //     [1,0,1,0,1,1],
+    //     [1,0,1,0,1,1],
+    //     [0,0,1,0,0,1],
+    //     [1,1,1,1,0,0],
+    //     ]
+    // let m = [
+    //   [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
+    //   [1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1],
+    //   [1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0],
+    //   [1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0],
+    //   [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0],
+    //   [1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0],
+    //   [1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0],
+    //   [1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
+    //   [1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1],
+    //   [1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
+    //   [1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
+    //   [1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    // ];
+    // for bfs >dfs 
+    let m = [
+      [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
+      [1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1],
+      [1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0],
+      [1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0],
+      [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0],
+      [1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0],
+      [1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0],
+      [1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
+      [1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1],
+      [1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
+      [1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
+      [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ];
+    const buildGraph = () => {
+      let graph = document.getElementById("graph");
+      let html = "";
+      for (let i = 0; i < m.length; i++) {
+        html = html + '<div class="row">';
+        for (let j = 0; j < m[i].length; j++) {
+          let idCell = `[${i}][${j}]`;
+          let cell =
+            m[i][j] === 0
+              ? `<div id="${idCell}" class="cell"></div>`
+              : `<div id="${idCell}"  class="cell wall"></div>`;
+          html = html + cell;
+        }
+        html = html + "</div>";
+      }
+
+      graph.innerHTML = html;
+    };
+
+    const setColor = (cell, color) => {
+      let idCell = `[${cell[0]}][${cell[1]}]`;
+      let cellItem = document.getElementById(idCell);
+      cellItem.style.backgroundColor = color;
+    };
+    const sleep = (ms) => {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    };
+
+    ////////////////////////////
+
+    buildGraph();
+
+    const validPoint = (cell) => {
+      const [i, j] = cell;
+      const points = [
+        [i, j - 1],
+        [i + 1, j],
+        [i, j + 1],
+        [i - 1, j],
+      ];
+      const lengthMaze = m.length;
+      const pointinMaze = points.filter((item) => {
+        return (
+          item[0] >= 0 &&
+          item[0] < lengthMaze &&
+          item[1] >= 0 &&
+          item[1] < lengthMaze
+        );
+      });
+      const validPoint = pointinMaze.filter((item) => {
+        return m[item[0]][item[1]] === 0;
+      });
+
+      return validPoint;
+    };
+    let buildPath = (start, end, map) => {
+      if (JSON.stringify(start) === JSON.stringify(end)) {
+        return;
+      }
+      //debugger
+      let newEnd = map[JSON.stringify(end)];
+      newEnd = JSON.parse(newEnd);
+      setColor(newEnd, "#00a6dd");
+
+      return buildPath(start, newEnd, map);
+    };
+    validPoint([4, 4]);
+    const bfs = async (start, end) => {
+      setColor(start, "green");
+      setColor(end, "green");
+      let queue = [start];
+      let visit = [];
+      let mapCell = {};
+      while (queue.length !== 0) {
+        await sleep(100);
+        let item = queue.shift();
+        setColor(item, "red");
+        let nextPoint = validPoint(item);
+        nextPoint.forEach((nextItem) => {
+          if (!visit.includes(JSON.stringify(nextItem))) {
+            visit.push(JSON.stringify(nextItem));
+            mapCell[JSON.stringify(nextItem)] = JSON.stringify(item);
+
+            queue.push(nextItem);
+          }
+        });
+
+        if (item[0] === end[0] && item[1] === end[1]) {
+          buildPath(start, end, mapCell);
+          break;
+        }
+      }
+      setColor(start, "green");
+      setColor(end, "green");
+    };
+    const dfs = async (start, end, visit = [], mapCell = {}, firstPoint) => {
+      if (!firstPoint) {
+        firstPoint = start;
+      }
+      setColor(start, "red");
+      setColor(end, "green");
+      await sleep(800);
+      
+      if (JSON.stringify(start) === JSON.stringify(end)) {
+        buildPath(firstPoint, end, mapCell);
+        return;
+      } else {
+        let nextPoint = validPoint(start);
+        nextPoint.forEach((nextItem) => {
+          if (!visit.includes(JSON.stringify(nextItem))) {
+            visit.push(JSON.stringify(nextItem));
+            mapCell[JSON.stringify(nextItem)] = JSON.stringify(start);
+            console.log('nextItem',nextItem)
+            dfs(nextItem, end, visit, mapCell, firstPoint);
+          }
+        });
+      }
+    };
+
+    // bfs([8,8],[11,11])
+    //bfs([0,0],[11,11], [])
+    //dfs([0,0],[11,11])
+   dfs([0, 0], [5, 5]);
+//    dfs([0, 0], [1, 1])
+  </script>
+  <style>
+    .row {
+      display: flex;
+      flex-direction: row;
+    }
+    .cell {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #00a6dd;
+      margin: 2px;
+    }
+    .wall {
+      background-color: black;
+    }
+  </style>
+</html>
